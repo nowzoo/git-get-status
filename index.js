@@ -2,13 +2,19 @@ var exec = require('child_process').exec;
 var cmd = 'git status --porcelain -b';
 
 exec(cmd, function(err, stdout){
+    var lines;
+    var branch_line;
     var branches;
-    var branch_rx = /^\#\#\s+([^]+)(...([^\s]+)(\s\[([^\]]+))?)?/;
-    var status;
+    var status = {};
     if (err) return callback(err);
-    branches = stdout.match(branch_rx)[1].split('...');
-    status = stdout.match(branch_rx);
-    console.log(status);
+    lines = stdout.split('\n');
+    branch_line = lines.shift().replace(/\#\#\s+/, '');
+    branches = branch_line.split('...');
+    status.local = branches[0];
+    if (branches[1]){
+        
+    }
+    console.log(branches);
 
 
     //callback(err, stdout.length > 0);
