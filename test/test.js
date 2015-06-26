@@ -71,6 +71,19 @@ describe('git-get-status', function(){
             expect(status.files).to.have.length(8);
         });
 
+        it('should return the correct results for a repo with committed changes but not pushed', function(){
+            var input = fs.readFileSync(path.join(__dirname, 'status-committed-unpushed.txt'), {encoding:'utf8'});
+            var status = git_get_status.parse_status(input);
+            expect(status).to.be.an('object');
+            expect(status).to.have.keys(['local_branch', 'remote_branch', 'remote_diff', 'clean', 'files']);
+            expect(status.local_branch).to.equal('master');
+            expect(status.remote_branch).to.equal('origin/master');
+            expect(status.remote_diff).not.to.be.null;
+            expect(status.clean).to.be.true;
+            expect(status.files).to.be.an('array');
+            expect(status.files).to.have.length(0);
+        });
+
 
     });
 
