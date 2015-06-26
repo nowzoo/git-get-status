@@ -1,0 +1,9 @@
+## master...origin/master
+M  index.js
+M  package.json
+A  test/show-ref-newly-initialized-repo.txt
+A  test/show-ref-reop-with-one-ref.txt
+A  "test/show-ref-repo-with three-refs.txt"
+A  test/status-newly-init.txt
+A  test/status-unadded-changes.txt
+A  test/test.js

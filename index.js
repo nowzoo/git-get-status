@@ -1,16 +1,29 @@
-var exec = require('child_process').exec;
-var cmd = 'git status --porcelain -b';
 
-exec(cmd, function(err, stdout){
+var parse_status = function(str){
     var lines;
     var branch_line;
     var branches;
-    var status = {};
+    var status = {
+        local_branch: null,
+        remote_branch: null,
+        remote_diff: null,
+        clean: true,
+        files: []
+    };
     var result;
-    var files = [];
-    if (err) return callback(err);
-    lines = stdout.trim().split('\n');
-    branch_line = lines.shift().replace(/\#\#\s+/, '');
+    var initial_commit_rx =/^\#\# Initial commit on ([^\n]+)\s?$/;
+
+    lines = str.trim().split('\n');
+    branch_line = lines.shift();
+
+    result = branch_line.match(initial_commit_rx);
+    if (result){
+        status.local_branch = result[1];
+        return status;
+    }
+
+    branch_line = branch_line.replace(/\#\#\s+/, '');
+
     branches = branch_line.split('...');
     status.local_branch = branches[0];
     status.remote_diff = null;
@@ -20,15 +33,38 @@ exec(cmd, function(err, stdout){
         result = branches[1].match(/\[([^\]]+)\]/);
         status.remote_diff = result ? result[1] : null;
     }
-
-
     lines.forEach(function(str){
         if (str.match(/\S/)){
-            files.push(str);
+            status.files.push(str);
         }
     });
-    status.clean = files.length === 0;
-    status.files = files;
-    console.log(status);
-    //callback(err, stdout.length > 0);
-});
+    status.clean = status.files.length === 0;
+    return status;
+};
+
+var parse_show_ref = function(str){
+    var _ = require('lodash');
+    var refs = {};
+    var lines = str.length === 0 ? [] : str.split('\n');
+    _.each(lines, function(str){
+        str = str.trim();
+        if (str.length === 0) return;
+        var parts = str.split(/\s+/);
+        refs[parts[1]] = parts[0];
+
+    });
+    return refs;
+};
+
+module.exports = function(callback){
+    var exec = require('child_process').exec;
+    var cmd = 'git status --porcelain -b';
+    exec(cmd, function(err, stdout){
+        if (err) return callback(err);
+        callback(null, parse(stdout));
+    });
+};
+module.exports.parse_status = parse_status;
+module.exports.parse_show_ref = parse_show_ref;
+
+
