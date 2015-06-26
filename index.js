@@ -7,8 +7,9 @@ exec(cmd, function(err, stdout){
     var branches;
     var status = {};
     var result;
+    var files = [];
     if (err) return callback(err);
-    lines = stdout.split('\n');
+    lines = stdout.trim().split('\n');
     branch_line = lines.shift().replace(/\#\#\s+/, '');
     console.log(stdout);
     branches = branch_line.split('...');
@@ -20,7 +21,15 @@ exec(cmd, function(err, stdout){
         result = branches[1].match(/\[([^\]]+)\]/);
         status.remote_diff = result ? result[1] : null;
     }
-    status.clean = lines.length === 0;
+
+
+    lines.forEach(function(str){
+        if (str.match(/\S/)){
+            files.push(str);
+        }
+    });
+    status.clean = files.length === 0;
+    status.files = files;
     console.log(status);
 
 
