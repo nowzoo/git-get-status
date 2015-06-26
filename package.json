@@ -1,0 +1,23 @@
+{
+  "name": "git-get-status",
+  "version": "1.0.0",
+  "description": "Small node.js utility for parsing git status --porcelain",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nowzoo/git-get-status.git"
+  },
+  "keywords": [
+    "git",
+    "node"
+  ],
+  "author": "Christopher Carson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nowzoo/git-get-status/issues"
+  },
+  "homepage": "https://github.com/nowzoo/git-get-status"
+}
