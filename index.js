@@ -11,13 +11,12 @@ exec(cmd, function(err, stdout){
     if (err) return callback(err);
     lines = stdout.trim().split('\n');
     branch_line = lines.shift().replace(/\#\#\s+/, '');
-    console.log(stdout);
     branches = branch_line.split('...');
-    status.local = branches[0];
+    status.local_branch = branches[0];
     status.remote_diff = null;
     if (branches[1]){
         result = branches[1].match(/^([^\s]+)/);
-        status.remote = result[1];
+        status.remote_branch = result[1];
         result = branches[1].match(/\[([^\]]+)\]/);
         status.remote_diff = result ? result[1] : null;
     }
@@ -31,7 +30,5 @@ exec(cmd, function(err, stdout){
     status.clean = files.length === 0;
     status.files = files;
     console.log(status);
-
-
     //callback(err, stdout.length > 0);
 });
