@@ -60,7 +60,7 @@ module.exports = function(callback){
     var cmd = 'git status --porcelain -b';
     exec(cmd, function(err, stdout){
         if (err) return callback(err);
-        callback(null, parse(stdout));
+        callback(null, parse_status(stdout));
     });
 };
 module.exports.parse_status = parse_status;
