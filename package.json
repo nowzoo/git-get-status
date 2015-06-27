@@ -1,6 +1,6 @@
 {
   "name": "git-get-status",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Small node.js utility for parsing git status --porcelain",
   "main": "index.js",
   "scripts": {
