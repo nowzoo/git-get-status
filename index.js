@@ -43,10 +43,9 @@ var parse_status = function(str){
 };
 
 var parse_show_ref = function(str){
-    var _ = require('lodash');
     var refs = {};
     var lines = str.length === 0 ? [] : str.split('\n');
-    _.each(lines, function(str){
+    lines.forEach(function(str){
         str = str.trim();
         if (str.length === 0) return;
         var parts = str.split(/\s+/);
